@@ -12,6 +12,7 @@ DEFAULT_COUNT = 10
 TITLE = "Man or Markov?"
 
 set :haml, :format => :html5, :attr_wrapper => %{"}
+set :views, lambda { root }
 
 get '/' do
   
