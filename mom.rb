@@ -8,7 +8,6 @@ require "sass"
 
 DEFAULT_COUNT = 10
 TITLE = "Man or Markov?"
-TEMPLATE = DATA.read
 
 set :haml, :format => :html5, :attr_wrapper => %{"}
 
@@ -33,7 +32,7 @@ get '/' do
     end
   end
 
-  haml TEMPLATE
+  haml :index
 end
 
 
@@ -123,47 +122,3 @@ class Aftonbladet
     @doc.search(selector).map { |a| [a.inner_text.gsub(/ |\n/, ' ').strip, a[:href]] }.reject { |text, url| text.empty? || text.count(" ").zero? }
   end
 end
-
-
-__END__
-!!!
-%html
-  %head
-    %meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
-    %title= @title
-    %style
-      :sass
-        body
-          .headline
-            font-weight: bold
-          .answer
-            margin-top: -1em
-            display: none
-        body.revealed
-          .answer
-            display: block
-          .real .answer
-            color: #0C0
-          .fake .answer
-            color: #C00
-    :javascript
-      function facit() {
-        document.body.className = document.body.className=="revealed" ? "" : "revealed";
-        return false;
-      }
-
-    %body
-      %h1= @title
-      %p Vissa av följande rubriker från Aftonbladet är riktiga, vissa är <a href="http://sv.wikipedia.org/wiki/Markovkedja">stokastiskt genererade</a>. Gissa!
-      %ol
-        - @data.each do |headline, url, real|
-          %li{ :class => (real ? 'real' : 'fake') }
-            %p.headline= Rack::Utils.escape_html headline
-            %p.answer
-              - if real
-                == ✓ Riktig rubrik - <a href="#{url}">läs artikeln</a>
-              - else
-                ✗ Markov
-            
-      %p <a href="javascript:facit()">Dölj/visa facit</a>
-      %p <a href="/">Visa fler</a>
