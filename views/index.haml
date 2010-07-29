@@ -6,11 +6,17 @@
     %style
       :sass
         body
+          font-family: sans-serif
           .headline
             font-weight: bold
           .answer
             margin-top: -1em
             display: none
+          #footer
+            margin-top: 30px
+            border-top: 1px solid #EEE
+            padding-top: 5px
+            font-size: 80%
         body.revealed
           .answer
             display: block
@@ -39,3 +45,8 @@
             
       %p <a href="javascript:facit()">Dölj/visa facit</a>
       %p <a href="/">Visa fler</a>
+
+      #footer
+        %p
+          Av <a href="http://henrik.nyh.se">Henrik Nyh</a>.
+          <a href="http://github.com/henrik/man_or_markov">Visa källa.</a>
