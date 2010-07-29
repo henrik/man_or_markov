@@ -18,14 +18,18 @@ get '/' do
   @title = TITLE
   
   headlines = Aftonbladet.new.headlines
+  
   mc = MarkovChain.new(headlines.map { |text, url| text })
+  
+  # We should only list headlines of at least three words, since shorter headlines must always exist in the page.
+  listable_headlines = headlines.select { |text, url| text.count(" ") >= 2 }
   
   count = params[:count].to_i.nonzero? || DEFAULT_COUNT
 
   @data = []
   count.times do
     if rand(2).zero?
-      headline, url = headlines[rand(headlines.length)]
+      headline, url = listable_headlines[rand(listable_headlines.length)]
       @data << [headline, url, true]
     else
       max_words = 20 + rand(10)
@@ -135,6 +139,7 @@ class Aftonbladet
   
   def headlines
     selector = 'h2 a, #abPilramContainer .abLink a:not([@href^="http://blog."])'  # Blog links are not headlines.
-    @doc.search(selector).map { |a| [a.inner_text.gsub(/ |\n/, ' ').strip, a[:href]] }.reject { |text, url| text.empty? || text.count(" ").zero? }
+    @doc.search(selector).map { |a| [a.inner_text.gsub(/ |\n/, ' ').strip, a[:href]] }.
+    reject { |text, url| text.empty? }
   end
 end
