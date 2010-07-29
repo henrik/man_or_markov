@@ -1,10 +1,12 @@
 # Tiny Sinatra quiz app: determine which (Swedish) Aftonbladet headlines are real and which are generated from Markov chains.
 # By Henrik Nyh <henrik@nyh.se> 2010-07-29 under the MIT license.
 
+require "open-uri"
 require "rubygems"
 require "sinatra"
 require "haml"
 require "sass"
+require "hpricot"
 
 DEFAULT_COUNT = 10
 TITLE = "Man or Markov?"
@@ -109,9 +111,6 @@ private
 end
 
 
-require "open-uri"
-require "rubygems"
-require "hpricot"
 class Aftonbladet
   def initialize
     @doc = Hpricot(open("http://www.aftonbladet.se/"))
