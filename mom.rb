@@ -30,11 +30,28 @@ get '/' do
     else
       max_words = 20 + rand(10)
       headline = mc.get_unique_line(max_words)
+      headline = balance_quotes(headline)
       @data << [headline, nil, false]
     end
   end
 
   haml :index
+end
+
+
+# Unbalanced quotes is a dead giveaway, so balance them.
+
+def balance_quotes(text)
+  odd_number_of_quotes = text.count('”') % 2 == 1
+  return text unless odd_number_of_quotes  # We might have e.g.: ”Foo” is a bar.
+  case text
+  when /^”.*[^”]$/u  # Quote at start but not end.
+    text + '”'
+  when /^[^”].*”$/  # Quote at end but not start.
+    text[0...-1]
+  else
+    text
+  end
 end
 
 
