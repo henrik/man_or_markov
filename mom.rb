@@ -47,12 +47,12 @@ end
 # Unbalanced quotes is a dead giveaway, so balance them.
 
 def balance_quotes(text)
-  odd_number_of_quotes = text.count('”') % 2 == 1
+  odd_number_of_quotes = text.scan(/[”"]/).length % 2 == 1
   return text unless odd_number_of_quotes  # We might have e.g.: ”Foo” is a bar.
   case text
-  when /\A”.*[^”]\z/u    # Quote at start but not end.
-    text + '”'
-  when /\A([^”].*)”\z/u  # Quote at end but not start.
+  when /\A([”"]).*[^”"]\z/u    # Quote at start but not end.
+    text + $1
+  when /\A([^”"].*)[”"]\z/u  # Quote at end but not start.
     $1
   else
     text
