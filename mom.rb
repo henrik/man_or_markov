@@ -45,9 +45,9 @@ def balance_quotes(text)
   odd_number_of_quotes = text.count('”') % 2 == 1
   return text unless odd_number_of_quotes  # We might have e.g.: ”Foo” is a bar.
   case text
-  when /^”.*[^”]$/u  # Quote at start but not end.
+  when /\A”.*[^”]\z/u    # Quote at start but not end.
     text + '”'
-  when /^([^”].*)”$/  # Quote at end but not start.
+  when /\A([^”].*)”\z/u  # Quote at end but not start.
     $1
   else
     text
