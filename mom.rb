@@ -47,8 +47,8 @@ def balance_quotes(text)
   case text
   when /^”.*[^”]$/u  # Quote at start but not end.
     text + '”'
-  when /^[^”].*”$/  # Quote at end but not start.
-    text[0...-1]
+  when /^([^”].*)”$/  # Quote at end but not start.
+    $1
   else
     text
   end
