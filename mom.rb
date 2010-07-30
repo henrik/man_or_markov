@@ -50,10 +50,10 @@ def balance_quotes(text)
   odd_number_of_quotes = text.scan(/[”"]/).length % 2 == 1
   return text unless odd_number_of_quotes  # We might have e.g.: ”Foo” is a bar.
   case text
-  when /\A([”"]).*[^”"]\z/u    # Quote at start but not end.
-    text + $1
   when /\A([^”"].*)[”"]\z/u  # Quote at end but not start.
-    $1
+    $1  # Remove the quote.
+  when /\A.*([”"])[^”"]+\z/u    # Last quote somewhere before the end.
+    text + $1  # Add a quote at the end.
   else
     text
   end
