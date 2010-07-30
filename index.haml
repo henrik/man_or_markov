@@ -30,23 +30,23 @@
         return false;
       }
 
-    %body
-      %h1= @title
-      %p Vissa av följande rubriker från Aftonbladet är riktiga, vissa är <a href="http://sv.wikipedia.org/wiki/Markovkedja">stokastiskt genererade</a>. Gissa!
-      %ol
-        - @data.each do |headline, url, real|
-          %li{ :class => (real ? 'real' : 'fake') }
-            %p.headline= Rack::Utils.escape_html headline
-            %p.answer
-              - if real
-                == ✓ Riktig rubrik - <a href="#{url}">läs artikeln</a>
-              - else
-                ✗ Markov
-            
-      %p <a href="javascript:facit()">Dölj/visa facit</a>
-      %p <a href="/">Visa fler</a>
+  %body
+    %h1= @title
+    %p Vissa av följande rubriker från Aftonbladet är riktiga, vissa är <a href="http://sv.wikipedia.org/wiki/Markovkedja">stokastiskt genererade</a>. Gissa!
+    %ol
+      - @data.each do |headline, url, real|
+        %li{ :class => (real ? 'real' : 'fake') }
+          %p.headline= Rack::Utils.escape_html headline
+          %p.answer
+            - if real
+              == ✓ Riktig rubrik - <a href="#{url}">läs artikeln</a>
+            - else
+              ✗ Markov
+          
+    %p <a href="javascript:facit()">Dölj/visa facit</a>
+    %p <a href="/">Visa fler</a>
 
-      %footer
-        %p
-          Av <a href="http://henrik.nyh.se">Henrik Nyh</a>.
-          <a href="http://github.com/henrik/man_or_markov">Visa källa.</a>
+    %footer
+      %p
+        Av <a href="http://henrik.nyh.se">Henrik Nyh</a>.
+        <a href="http://github.com/henrik/man_or_markov">Visa källa.</a>
