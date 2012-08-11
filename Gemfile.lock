@@ -1,9 +1,13 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    addressable (2.3.2)
     haml (3.1.6)
     hpricot (0.8.6)
     rack (1.4.1)
+    rack-canonical-host (0.0.8)
+      addressable
+      rack (~> 1.0)
     rack-protection (1.2.0)
       rack
     sass (3.2.0)
@@ -19,5 +23,6 @@ PLATFORMS
 DEPENDENCIES
   haml
   hpricot
+  rack-canonical-host
   sass
   sinatra
