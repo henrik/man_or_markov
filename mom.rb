@@ -2,11 +2,10 @@
 # By Henrik Nyh <henrik@nyh.se> 2010-07-29 under the MIT license.
 
 require "open-uri"
+
 require "rubygems"
-require "sinatra"
-require "haml"
-require "sass"
-require "hpricot"
+require "bundler"
+Bundler.require :default, (ENV['RACK_ENV'] || "development").to_sym
 
 DEFAULT_COUNT = 10
 TITLE = "Man or Markov?"
@@ -15,16 +14,16 @@ set :haml, :format => :html5, :attr_wrapper => %{"}
 set :views, lambda { root }
 
 get '/' do
-  
+
   @title = TITLE
-  
+
   headlines = Aftonbladet.new.headlines
-  
+
   mc = MarkovChain.new(headlines.map { |text, url| text })
-  
+
   # We should only list headlines of at least three words, since shorter headlines must always exist in the page.
   listable_headlines = headlines.select { |text, url| text.count(" ") >= 2 }
-  
+
   count = params[:count].to_i.nonzero? || DEFAULT_COUNT
 
   @data = []
@@ -78,7 +77,7 @@ class MarkovChain
     end
     words.join(" ")
   end
-  
+
   def get_unique_line(max_words=nil)
     tries = 100
     while tries > 0 do
@@ -92,7 +91,7 @@ class MarkovChain
     end
     nil
   end
-  
+
 private
 
   def add_by_line(text)
@@ -125,11 +124,11 @@ private
     end
     next_word
   end
-  
+
   def starter
     @starters[rand(@starters.length)]
   end
- 
+
 end
 
 
@@ -137,7 +136,7 @@ class Aftonbladet
   def initialize
     @doc = Hpricot(open("http://www.aftonbladet.se/"))
   end
-  
+
   def headlines
     selector = 'h2 a, #abPilramContainer .abLink a:not([@href^="http://blog."])'  # Blog links are not headlines.
     @doc.search(selector).map { |a| [a.inner_text.gsub(/ |\n/, ' ').strip, a[:href]] }.
