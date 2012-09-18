@@ -9,14 +9,14 @@ require "rubygems"
 require "bundler"
 Bundler.require :default, (ENV['RACK_ENV'] || "development").to_sym
 
-DEFAULT_COUNT = 10
-TITLE = "Man or Markov?"
-
 set :haml, :format => :html5, :attr_wrapper => %{"}
 set :views, lambda { root }
 
+set :default_count, 10
+set :title, "Man or Markov?"
+
 get '/' do
-  @title = TITLE
+  @title = settings.title
 
   headlines = AftonbladetHeadlines.headlines
 
@@ -25,7 +25,7 @@ get '/' do
   # We should only list headlines of at least three words, since shorter headlines must always exist in the page.
   listable_headlines = headlines.select { |text, url| text.count(" ") >= 2 }
 
-  count = params[:count].to_i.nonzero? || DEFAULT_COUNT
+  count = params[:count].to_i.nonzero? || settings.default_count
 
   @data = []
   count.times do
