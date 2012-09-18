@@ -31,7 +31,7 @@
       }
 
     %h1= @title
-    %p Vissa av följande rubriker från Aftonbladet är riktiga, vissa är <a href="http://sv.wikipedia.org/wiki/Markovkedja">stokastiskt genererade</a>. Gissa!
+    %p Vissa av följande rubriker från Aftonbladet är riktiga, vissa är bara <a href="http://sv.wikipedia.org/wiki/Markovkedja">statistiskt sannolika</a>. Gissa!
     %ol
       - @data.each do |headline, url, real|
         %li{ :class => (real ? 'real' : 'fake') }
