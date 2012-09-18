@@ -62,20 +62,24 @@ end
 
 
 class Aftonbladet
+  URL = "http://www.aftonbladet.se/"
+  SELECTOR = ".abItemHLine h2, .abH"
+
   def initialize
-    @doc = Nokogiri::HTML(open("http://www.aftonbladet.se/"))
+    @doc = Nokogiri::HTML(open(URL))
   end
 
   def headlines
-    selector = '.abItemHLine h2, .abH'
-    @doc.css(selector).map { |headline|
-      text = headline.content.gsub(/ |\n/, ' ').strip
+    @doc.
+      css(SELECTOR).
+      map { |headline|
+        text = headline.content.gsub(/ |\n/, ' ').strip
 
-      link = headline.ancestors("a").first
-      url = link ? link[:href] : nil
+        link = headline.ancestors("a").first
+        url = link ? link[:href] : nil
 
-      [text, url]
-    }.
-    reject { |text, url| text.empty? }
+        [text, url]
+      }.
+      reject { |text, url| text.empty? }
   end
 end
