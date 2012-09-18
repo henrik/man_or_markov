@@ -37,6 +37,7 @@ get '/' do
       max_words = 20 + rand(10)
       headline = mc.get_unique_line(max_words)
       headline = balance_quotes(headline)
+      headline = unbreak_hyphenation(headline)
       @data << [headline, nil, false]
     end
   end
@@ -58,6 +59,10 @@ def balance_quotes(text)
   else
     text
   end
+end
+
+def unbreak_hyphenation(text)
+  text.gsub(/(\w)- /, '\1')
 end
 
 
