@@ -3,7 +3,7 @@ GEM
   specs:
     addressable (2.3.2)
     haml (3.1.6)
-    hpricot (0.8.6)
+    nokogiri (1.5.5)
     rack (1.4.1)
     rack-canonical-host (0.0.8)
       addressable
@@ -22,7 +22,7 @@ PLATFORMS
 
 DEPENDENCIES
   haml
-  hpricot
+  nokogiri
   rack-canonical-host
   sass
   sinatra

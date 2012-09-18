@@ -17,7 +17,6 @@ set :haml, :format => :html5, :attr_wrapper => %{"}
 set :views, lambda { root }
 
 get '/' do
-
   @title = TITLE
 
   headlines = Aftonbladet.new.headlines
@@ -62,16 +61,21 @@ def balance_quotes(text)
 end
 
 
-
-
 class Aftonbladet
   def initialize
-    @doc = Hpricot(open("http://www.aftonbladet.se/"))
+    @doc = Nokogiri::HTML(open("http://www.aftonbladet.se/"))
   end
 
   def headlines
-    selector = 'h2 a, #abPilramContainer .abLink a:not([@href^="http://blog."])'  # Blog links are not headlines.
-    @doc.search(selector).map { |a| [a.inner_text.gsub(/ |\n/, ' ').strip, a[:href]] }.
+    selector = '.abItemHLine h2, .abH'
+    @doc.css(selector).map { |headline|
+      text = headline.content.gsub(/ |\n/, ' ').strip
+
+      link = headline.ancestors("a").first
+      url = link ? link[:href] : nil
+
+      [text, url]
+    }.
     reject { |text, url| text.empty? }
   end
 end
