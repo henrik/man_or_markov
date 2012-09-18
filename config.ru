@@ -1,4 +1,4 @@
-require 'mom'
+require "./mom"
 
 use Rack::CanonicalHost, ENV["CANONICAL_HOST"] if ENV["CANONICAL_HOST"]
 
