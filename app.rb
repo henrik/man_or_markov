@@ -36,8 +36,7 @@ get '/' do
     else
       max_words = 20 + rand(10)
       headline = mc.get_unique_line(max_words)
-      headline = balance_quotes(headline)
-      headline = unbreak_hyphenation(headline)
+      headline = HeadlineNormalizer.normalize(headline)
       @data << [headline, nil, false]
     end
   end
@@ -45,24 +44,29 @@ get '/' do
   haml :index
 end
 
-
-# Unbalanced quotes is a dead giveaway, so balance them.
-
-def balance_quotes(text)
-  odd_number_of_quotes = text.scan(/[”"]/).length % 2 == 1
-  return text unless odd_number_of_quotes  # We might have e.g.: ”Foo” is a bar.
-  case text
-  when /\A([^”"].*)[”"]\z/u  # Quote at end but not start.
-    $1  # Remove the quote.
-  when /\A.*([”"])[^”"]+\z/u    # Last quote somewhere before the end.
-    text + $1  # Add a quote at the end.
-  else
-    text
+module HeadlineNormalizer
+  def self.normalize(text)
+    text = balance_quotes(text)
+    unbreak_hyphenation(text)
   end
-end
 
-def unbreak_hyphenation(text)
-  text.gsub(/(\w)- /, '\1')
+  # Unbalanced quotes is a dead giveaway, so balance them.
+  def self.balance_quotes(text)
+    odd_number_of_quotes = text.scan(/[”"]/).length % 2 == 1
+    return text unless odd_number_of_quotes  # We might have e.g.: ”Foo” is a bar.
+    case text
+    when /\A([^”"].*)[”"]\z/u  # Quote at end but not start.
+      $1  # Remove the quote.
+    when /\A.*([”"])[^”"]+\z/u    # Last quote somewhere before the end.
+      text + $1  # Add a quote at the end.
+    else
+      text
+    end
+  end
+
+  def self.unbreak_hyphenation(text)
+    text.gsub(/(\w)- /, '\1')
+  end
 end
 
 
