@@ -30,7 +30,7 @@ get '/' do
   @data = []
   count.times do
     if rand(2).zero?
-      headline, url = listable_headlines.sample
+      headline, url = listable_headlines[rand(listable_headlines.length)]
       @data << [headline, url, true]
     else
       max_words = 20 + rand(10)
