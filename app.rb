@@ -12,7 +12,7 @@ Bundler.require :default, (ENV['RACK_ENV'] || "development").to_sym
 set :haml, :format => :html5, :attr_wrapper => %{"}
 set :views, lambda { root }
 
-set :default_count, 10
+set :default_count, 15
 set :title, "Man or Markov?"
 
 get '/' do
