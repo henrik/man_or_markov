@@ -31,7 +31,9 @@
       }
 
     %h1= @title
-    %p Vissa av följande rubriker från Aftonbladet är riktiga, vissa är bara <a href="http://sv.wikipedia.org/wiki/Markovkedja">statistiskt sannolika</a>. Gissa!
+    %p Vissa av följande rubriker från Aftonbladet är riktiga, andra är bara <a href="http://sv.wikipedia.org/wiki/Markovkedja">statistiskt sannolika</a>.
+    %p Gissa vilken som är vad, och klicka sen nedan för att se facit!
+    %p <a href="/">Ladda om sidan</a> för att visa fler.
     %ol
       - @data.each do |headline, url, real|
         %li{ :class => (real ? 'real' : 'fake') }
@@ -43,7 +45,6 @@
               ✗ Markov
 
     %p <a href="#" onclick="facit()">Dölj/visa facit</a>
-    %p <a href="/">Visa fler</a>
 
     %footer
       %p
