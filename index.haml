@@ -24,6 +24,8 @@
             color: #0C0
           .fake .answer
             color: #C00
+        .headlines
+          margin: 40px 0
     :javascript
       function facit() {
         document.body.className = document.body.className=="revealed" ? "" : "revealed";
@@ -31,10 +33,9 @@
       }
 
     %h1= @title
-    %p Vissa av följande rubriker från Aftonbladet är riktiga, andra är bara <a href="http://sv.wikipedia.org/wiki/Markovkedja">statistiskt sannolika</a>.
-    %p Gissa vilken som är vad, och klicka sen nedan för att se facit!
+    %p Vissa av följande rubriker från Aftonbladet är riktiga, andra är bara <a href="http://sv.wikipedia.org/wiki/Markovkedja">statistiskt sannolika</a>. Gissa, och klicka sen nedan för att se facit!
     %p <a href="/">Ladda om sidan</a> för att visa fler.
-    %ol
+    %ol.headlines
       - @data.each do |headline, url, real|
         %li{ :class => (real ? 'real' : 'fake') }
           %p.headline= Rack::Utils.escape_html headline
