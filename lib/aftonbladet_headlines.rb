@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require "uri"
+
 module AftonbladetHeadlines
   URL = "http://www.aftonbladet.se/"
   SELECTOR = ".abItemHLine h2, .abH"
@@ -13,7 +15,7 @@ module AftonbladetHeadlines
         text = headline.content.gsub(/ |\n/, ' ').strip
 
         link = headline.ancestors("a").first
-        url = link ? link[:href] : nil
+        url = link ? URI.join("http://www.aftonbladet.se", link[:href]).to_s : nil
 
         [text, url]
       }.
